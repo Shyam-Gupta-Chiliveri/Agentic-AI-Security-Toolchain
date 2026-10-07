@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vehicle cybersecurity desk</title>
+  <style>
+    :root { --bg:#0b0b0b; --ink:#f3f3f1; --muted:#8d8d89; --line:#2c2c2c; --gold:#c4a35a; --ok:#1F6B4A; --bad:#8B1E1E; }
+    * { box-sizing: border-box; }
+    html,body { margin:0; background:var(--bg); color:var(--ink); font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; }
+    header { border-bottom:1px solid var(--line); padding:20px 7vw; display:flex; justify-content:space-between; align-items:flex-end; }
+    .mark { letter-spacing:.32em; font-size:10px; color:var(--muted); }
+    main { max-width:1120px; margin:0 auto; padding:48px 7vw 96px; }
+    h1 { font-weight:300; letter-spacing:.05em; font-size:clamp(28px,5vw,48px); margin:0 0 14px; }
+    h2 { font-weight:400; font-size:18px; letter-spacing:.04em; margin:0 0 10px; }
+    .lead { font-weight:300; font-size:16px; line-height:1.6; color:#d4d4d0; max-width:720px; margin:0 0 36px; }
+    .kicker { letter-spacing:.22em; font-size:11px; color:var(--gold); margin-bottom:10px; }
+    .grid3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:22px 0 36px; }
+    .card { border:1px solid var(--line); padding:20px 18px 22px; min-height:140px; }
+    .card p, .muted, li { color:var(--muted); font-weight:300; line-height:1.55; font-size:14px; }
+    .card b, b { color:var(--ink); font-weight:500; }
+    ol.steps { margin:0 0 36px; padding:0 0 0 18px; }
+    ol.steps li { margin:0 0 10px; }
+    .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin: 8px 0 22px; }
+    select, button { font:inherit; }
+    select { background:#141414; color:var(--ink); border:1px solid var(--line); padding:10px 12px; min-width:280px; }
+    button { background:var(--gold); color:#111; border:0; padding:11px 18px; cursor:pointer; letter-spacing:.06em; font-size:13px; }
+    button.ghost { background:transparent; color:var(--ink); border:1px solid var(--line); }
+    button:disabled { opacity:.5; }
+    .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin: 8px 0 28px; }
+    .kpi { border:1px solid var(--line); padding:16px 16px 18px; }
+    .kpi b { display:block; font-size:30px; font-weight:300; margin-top:8px; }
+    .kpi span { color:var(--muted); font-size:10px; letter-spacing:.16em; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th, td { text-align:left; padding:12px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+    th { color:var(--muted); font-weight:500; letter-spacing:.12em; font-size:10px; }
+    tr { cursor:pointer; }
+    tr.active td, tr:hover td { background:#141414; }
+    .panel { border:1px solid var(--line); padding:24px; margin-top:20px; }
+    pre { white-space:pre-wrap; background:#141414; padding:14px; overflow:auto; font-size:13px; }
+    .sev-high { color:#e8b4b4; }
+    .sev-medium { color:var(--gold); }
+    .bytes { display:flex; gap:6px; flex-wrap:wrap; margin:12px 0 8px; }
+    .byte { width:72px; border:1px solid var(--line); padding:8px 6px; text-align:center; font-size:11px; }
+    .byte.on { border-color:var(--bad); background:#1a0c0c; }
+    .ok { color:#b7d4c6; }
+    footer { margin-top:56px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; letter-spacing:.06em; line-height:1.6; }
+    .coach { border-left:2px solid var(--gold); padding:4px 0 4px 14px; margin:16px 0; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="mark">VEHICLE CYBERSECURITY DESK · LIVE</div>
+    </div>
+    <div class="mark">OPEN SAE J1939 · MIT LICENCE · DOCKER</div>
+  </header>
+  <main>
+    <div class="kicker">OPERATIONS BOARD</div>
+    <h1>Materials of the bus.<br>Weaknesses in the stack.</h1>
+    <p class="lead">
+      This is a plant wall for code, not a chat bot. It reads the open-source
+      Society of Automotive Engineers J1939 (SAE J1939) C library and lists
+      possible memory and input bugs. You decide if each finding is a real problem.
+      It does not talk to a real Electronic Control Unit (ECU).
+    </p>
+
+    <div class="kicker">HOW YOU USE THIS DESK</div>
+    <ol class="steps">
+      <li>Choose <b>Static Application Security Testing (SAST)</b> in the menu. Click <b>Run scan</b>.</li>
+      <li>Click a row. Read: what the line does, why it matters in a vehicle, and the fix.</li>
+      <li>On this first scan, every row is a real bug. Choose <b>True positive (the tool is right)</b> and save.</li>
+      <li>Use <b>False positive (the tool was wrong)</b> only when the code is actually safe. Not today.</li>
+    </ol>
+
+    <div class="kicker">TECHNIQUES ON THIS DESK</div>
+    <div class="grid3">
+      <div class="card">
+        <div class="kicker">01</div>
+        <b>Static Application Security Testing (SAST)</b>
+        <p>Reads C files. Does not run the car. Looks for dangerous patterns, such as using a bus byte as an array index.</p>
+      </div>
+      <div class="card">
+        <div class="kicker">02</div>
+        <b>Fuzzing · American Fuzzy Lop plus plus (AFL++)</b>
+        <p>Throws many random Controller Area Network (CAN) frames at a small test program and watches for a crash.</p>
+      </div>
+      <div class="card">
+        <div class="kicker">03</div>
+        <b>Large Language Model (LLM) review</b>
+        <p>A language model reads a chunk of C. It can be wrong. You still label true or false.</p>
+      </div>
+      <div class="card">
+        <div class="kicker">04</div>
+        <b>Retrieval-Augmented Generation (RAG)</b>
+        <p>Each finding is mapped to a Common Weakness Enumeration (CWE) page from MITRE, with a cited link.</p>
+      </div>
+      <div class="card">
+        <div class="kicker">05</div>
+        <b>Critic agent</b>
+        <p>Drops noisy matches, sets severity, writes a suggested fix, and keeps the Common Weakness Enumeration (CWE) citation.</p>
+      </div>
+      <div class="card">
+        <div class="kicker">06</div>
+        <b>Closed-loop triage</b>
+        <p>Your true / false labels are stored. The next scan ranks similar Common Weakness Enumeration (CWE) items using that memory.</p>
+      </div>
+    </div>
+
+    <div class="kicker">SCAN</div>
+    <div class="row">
+      <select id="query" aria-label="Which analysis to run">
+        <option value="sast" selected>Static Application Security Testing (SAST) only</option>
+        <option value="full">Full desk: SAST, fuzzing, Large Language Model (LLM)</option>
+        <option value="fuzz">Fuzzing with American Fuzzy Lop plus plus (AFL++)</option>
+        <option value="llm">Large Language Model (LLM) review only</option>
+      </select>
+      <button id="scan">Run scan</button>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><span>KEPT AFTER CRITIC</span><b id="k-after">—</b></div>
+      <div class="kpi"><span>DROPPED AS NOISE</span><b id="k-drop">—</b></div>
+      <div class="kpi"><span>TRUE POSITIVE LABELS</span><b id="k-tp">—</b></div>
+      <div class="kpi"><span>FALSE POSITIVE LABELS</span><b id="k-fp">—</b></div>
+    </div>
+    <p class="muted" id="plan"></p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Common Weakness Enumeration (CWE)</th>
+          <th>Severity</th>
+          <th>File · line</th>
+          <th>Your label</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+
+    <div class="panel" id="detail">
+      <p class="muted">Run a scan, then click a row. The lesson for that line opens here.</p>
+    </div>
+
+    <div class="panel" id="frame">
+      <div class="kicker">INNOVATION · CONTROLLER AREA NETWORK (CAN) FRAME</div>
+      <h2>Why byte 0 must never be trusted as an index</h2>
+      <p class="muted">A Transport Protocol Data Transfer (TP.DT) frame carries 8 payload bytes. Byte 0 is the sequence number. The library does index = byte0 − 1. If byte 0 is 0, the unsigned value wraps to 255.</p>
+      <div class="bytes">
+        <div class="byte on"><b>0</b><br>sequence</div>
+        <div class="byte"><b>1–7</b><br>data</div>
+      </div>
+      <p class="muted">Red tile = attacker-controlled sequence. That is the first finding on this desk.</p>
+    </div>
+
+    <div class="panel">
+      <div class="kicker">SECURITY OF THE ARTIFICIAL INTELLIGENCE (AI)</div>
+      <h2>Prompt injection on Retrieval-Augmented Generation (RAG)</h2>
+      <p class="muted">A file named poison.md tells the model to ignore instructions. The allow-list must refuse it. This is not a code bug in J1939. It is a test of our own desk.</p>
+      <p id="inj" class="ok"></p>
+    </div>
+
+    <div class="panel">
+      <div class="kicker">GLOSSARY</div>
+      <p><b>Controller Area Network (CAN)</b> — the vehicle bus. Messages are short frames.</p>
+      <p><b>Society of Automotive Engineers J1939 (SAE J1939)</b> — a protocol on CAN used on trucks and machinery. This desk analyses an open-source C implementation.</p>
+      <p><b>Electronic Control Unit (ECU)</b> — a computer on that bus.</p>
+      <p><b>Transport Protocol Connection Management / Data Transfer (TP.CM / TP.DT)</b> — how J1939 splits a long payload into several 8-byte frames.</p>
+      <p><b>Common Weakness Enumeration (CWE)</b> — MITRE’s catalogue of bug types. CWE-787 is an out-of-bounds write. CWE-20 is missing input checks.</p>
+      <p><b>Common Vulnerabilities and Exposures (CVE)</b> — a public identifier for a specific disclosed vulnerability.</p>
+      <p><b>ISO/SAE 21434</b> — the automotive cybersecurity engineering standard. This desk maps a finding to a communication-item weakness. It is not a full Threat Analysis and Risk Assessment (TARA) or Cybersecurity Management System (CSMS).</p>
+      <p><b>True positive</b> — the tool is right; the line is a real problem. <b>False positive</b> — the tool is wrong; the line is safe.</p>
+    </div>
+
+    <footer>
+      Research / portfolio · Open-SAE-J1939 (MIT) · Docker Compose · not affiliated with Bayerische Motoren Werke (BMW) or Mercedes-Benz.
+    </footer>
+  </main>
+  <script>
+    let findings = [];
+    let selected = 0;
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s || "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+    const triageName = (t) => ({
+      unreviewed: "Unreviewed",
+      true_positive: "True positive",
+      false_positive: "False positive"
+    }[t] || t);
+
+    async function loadInjection() {
+      const r = await fetch("/api/injection");
+      const d = await r.json();
+      const p = d.plain || {};
+      $("inj").innerHTML = [p.filter_saw_attack, p.without_filter, p.with_filter].filter(Boolean).map(x => esc(x)).join("<br><br>");
+    }
+
+    function render(report) {
+      findings = report.findings || [];
+      $("k-after").textContent = report.findings_after_critic ?? findings.length;
+      $("k-drop").textContent = report.dropped_as_noise ?? 0;
+      $("k-tp").textContent = findings.filter(f => f.triage === "true_positive").length;
+      $("k-fp").textContent = findings.filter(f => f.triage === "false_positive").length;
+      const plan = (report.planned_agents || []).join(" → ");
+      $("plan").textContent = plan ? ("Router plan: " + plan) : "";
+      $("rows").innerHTML = findings.map((f, i) => {
+        const cwe = (f.extra && f.extra.cwe_full) || f.cwe_id;
+        const short = f.file.split("/").pop();
+        return `<tr data-i="${i}" class="${i===selected?"active":""}">
+          <td>0${i+1}</td>
+          <td>${esc(cwe)}</td>
+          <td class="sev-${esc(f.severity)}">${esc(f.severity)}</td>
+          <td>${esc(short)} · ${f.line}</td>
+          <td>${triageName(f.triage)}</td>
+        </tr>`;
+      }).join("");
+      $("rows").querySelectorAll("tr").forEach(tr => tr.onclick = () => show(Number(tr.dataset.i)));
+      if (findings.length) show(selected < findings.length ? selected : 0);
+    }
+
+    function show(i) {
+      selected = i;
+      $("rows").querySelectorAll("tr").forEach((tr, n) => tr.classList.toggle("active", n === i));
+      const f = findings[i];
+      const x = f.extra || {};
+      const rec = x.recommended_label === "true_positive"
+        ? "True positive (the tool is right)"
+        : x.recommended_label === "false_positive"
+          ? "False positive (the tool was wrong)"
+          : "Read first, then decide.";
+      $("detail").innerHTML = `
+        <div class="kicker">FINDING 0${i+1} · ${esc(x.technique_full || "Static Application Security Testing (SAST)")}</div>
+        <h2>${esc(f.title)}</h2>
+        <p class="muted">${esc(f.file)}:${f.line}<br>${esc(x.source_full || f.source)} · ${esc(x.cwe_full || f.cwe_id)} · ${esc(f.severity)}</p>
+        <pre>${esc(f.evidence)}</pre>
+        <p><b>What this line does</b></p>
+        <p class="muted">${esc(x.what_happened || f.title)}</p>
+        <p><b>Why it matters in a vehicle</b></p>
+        <p class="muted">${esc(x.why_in_vehicle || "")}</p>
+        <p><b>Suggested fix</b></p>
+        <p class="muted">${esc(f.suggested_fix)}</p>
+        <p class="muted">${esc(f.rag_citation)}</p>
+        <p class="muted">${esc(f.iso21434_note)}</p>
+        <p class="muted">${esc(f.critic_rationale)}</p>
+        <div class="coach">
+          <p><b>What you should sign on this row</b></p>
+          <p class="muted">${esc(rec)}. ${esc(x.why_this_label || "")}</p>
+        </div>
+        <div class="row">
+          <select id="triage">
+            <option value="unreviewed" ${f.triage==="unreviewed"?"selected":""}>Unreviewed (I have not decided)</option>
+            <option value="true_positive" ${f.triage==="true_positive"?"selected":""}>True positive (the tool is right — real problem)</option>
+            <option value="false_positive" ${f.triage==="false_positive"?"selected":""}>False positive (the tool was wrong — line is safe)</option>
+          </select>
+          <button class="ghost" id="save">Save label</button>
+        </div>`;
+      $("save").onclick = async () => {
+        await fetch("/api/label", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({
+            file: f.file, line: f.line, cwe_id: f.cwe_id, title: f.title,
+            source: f.source, evidence: f.evidence, triage: $("triage").value
+          })
+        });
+        f.triage = $("triage").value;
+        render({ ...window.__report, findings });
+      };
+    }
+
+    $("scan").onclick = async () => {
+      $("scan").disabled = true;
+      $("scan").textContent = "Scanning…";
+      const r = await fetch("/api/scan", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ query: $("query").value || "sast" })
+      });
+      window.__report = await r.json();
+      selected = 0;
+      render(window.__report);
+      $("scan").disabled = false;
+      $("scan").textContent = "Run scan";
+    };
+
+    fetch("/api/report").then(r => r.json()).then(rep => {
+      window.__report = rep;
+      render(rep);
+    });
+    loadInjection();
+  </script>
+</body>
+</html>

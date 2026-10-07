@@ -17,7 +17,7 @@ This is **research / portfolio**. It analyzes public MIT-licensed code. It is no
 
 ```mermaid
 flowchart LR
-  UI[Streamlit desk] --> R[Router]
+  UI[Docker desk :8080] --> R[Router]
   R --> S[Semgrep]
   R --> B[Builtin SAST]
   R --> Q[CodeQL SARIF]
@@ -48,24 +48,13 @@ If the CAN frame sets `data[0] == 0`, `index` wraps to 255 (`CWE-190`) and the w
 
 TP.CM also copies `data[3]` as package count with no 2..224 check (`CWE-20`).
 
-## Setup
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env   # optional GROQ_API_KEY for the LLM reviewer
-python scripts/run_scan.py --query full
-streamlit run apps/dashboard.py
-```
-
-Docker:
+## Run with Docker (the supported way)
 
 ```bash
 docker compose up --build
 ```
 
-Open http://localhost:8501
+Open http://localhost:8080 — click **Run scan**. Optional LLM reviewer: `GROQ_API_KEY=... docker compose up --build`.
 
 AFL++ (optional, slower):
 

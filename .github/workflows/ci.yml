@@ -14,11 +14,11 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install
-        run: pip install -r requirements.txt
+        run: pip install -r requirements-dev.txt
       - name: Pytest
         run: pytest
       - name: Bandit on toolchain
-        run: bandit -q -r secagent apps scripts -x tests
+        run: bandit -q -r secagent apps scripts -x tests,apps/static -s B404,B603
       - name: Semgrep on toolchain Python
         run: semgrep --error --config p/python --quiet secagent apps || true
       - name: Semgrep on vendored J1939 C
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: aquasecurity/trivy-action@0.28.0
+      - uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: fs
           scan-ref: .

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from secagent.display import cwe_label, source_label
 from secagent.labels import ranking_boost
 from secagent.models import Finding
 from secagent.rag import KnowledgeBase
@@ -33,9 +34,13 @@ def review(
         finding.severity = _severity(finding)
         finding.suggested_fix = finding.suggested_fix or _default_fix(finding)
         finding.critic_decision = "keep"
+        finding.extra["cwe_full"] = cwe_label(finding.cwe_id)
+        finding.extra["source_full"] = source_label(finding.source)
         finding.critic_rationale = (
-            "CWE mapped from MITRE via in-repo RAG. Severity from CWE class "
-            "and whether the index/length comes from the CAN frame."
+            "The critic mapped this to the Common Weakness Enumeration (CWE) using "
+            "Retrieval-Augmented Generation (RAG) over in-repo MITRE notes. "
+            "Severity follows the weakness class and whether the length or index "
+            "comes from a Controller Area Network (CAN) frame."
         )
         boost = ranking_boost(finding, labels)
         finding.extra["ranking_boost"] = boost

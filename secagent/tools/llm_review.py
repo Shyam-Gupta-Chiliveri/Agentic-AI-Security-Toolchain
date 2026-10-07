@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 import re
 from pathlib import Path
 
+from secagent.display import short_id
 from secagent.models import Finding
 
 PROMPT = """You are reviewing embedded C for an automotive CAN/J1939 stack.
@@ -44,8 +44,9 @@ class LlmReviewAgent:
                 )
                 text = resp.choices[0].message.content or "{}"
             except Exception:
-                continue
-            findings.extend(_parse(text, fallback_file=label))
+                text = ""
+            if text:
+                findings.extend(_parse(text, fallback_file=label))
         return findings
 
 
@@ -85,7 +86,7 @@ def _parse(text: str, fallback_file: str) -> list[Finding]:
         if not cwe.upper().startswith("CWE-"):
             cwe = f"CWE-{cwe}"
         path = str(item.get("file") or fallback_file)
-        fid = hashlib.sha1(f"llm|{path}|{line}|{cwe}".encode()).hexdigest()[:12]
+        fid = short_id("llm", path, str(line), cwe)
         findings.append(
             Finding(
                 id=fid,

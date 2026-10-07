@@ -1,0 +1,13 @@
+.venv
+.git
+.pytest_cache
+__pycache__
+*.pyc
+.env
+data/runs/*
+fuzz/out
+fuzz/build
+.DS_Store
+*.md
+!README.md
+!NOTICE

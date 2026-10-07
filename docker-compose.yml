@@ -1,12 +1,11 @@
 services:
   desk:
     build: .
+    image: j1939-security-desk:latest
     ports:
-      - "8501:8501"
-    env_file:
-      - .env
+      - "8080:8080"
     environment:
       GROQ_API_KEY: ${GROQ_API_KEY:-}
     volumes:
       - ./data:/app/data
-    read_only: false
+    restart: unless-stopped

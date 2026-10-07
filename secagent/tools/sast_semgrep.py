@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-import hashlib
 import json
 import shutil
 import subprocess
 from pathlib import Path
 
+from secagent.display import short_id
 from secagent.models import Finding
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -33,7 +33,14 @@ class SemgrepAgent:
             str(target),
         ]
         try:
-            proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120, check=False)
+            proc = subprocess.run(  # noqa: S603 — argv list, no shell, binary from PATH
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=120,
+                check=False,
+                shell=False,
+            )
         except (OSError, subprocess.TimeoutExpired):
             return []
         if not proc.stdout.strip():
@@ -55,7 +62,7 @@ class SemgrepAgent:
                 if not cwe.startswith("CWE-"):
                     cwe = f"CWE-{cwe}"
             evidence = extra.get("lines") or extra.get("message") or check_id
-            fid = hashlib.sha1(f"{path}:{line}:{check_id}".encode()).hexdigest()[:12]
+            fid = short_id(path, str(line), check_id)
             findings.append(
                 Finding(
                     id=fid,
