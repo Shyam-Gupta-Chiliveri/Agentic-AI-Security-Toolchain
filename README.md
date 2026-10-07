@@ -4,6 +4,11 @@ Portfolio project for **automotive AI security**. An agentic desk finds weakness
 
 This is **research / portfolio**. It analyzes public MIT-licensed code. It is not a complete ISO/SAE 21434 CSMS, TARA, or a substitute for Vector/CodeQL enterprise.
 
+**Live public desk (GitHub Pages):**  
+[https://shyam-gupta-chiliveri.github.io/Agentic-AI-Security-Toolchain/](https://shyam-gupta-chiliveri.github.io/Agentic-AI-Security-Toolchain/)
+
+That page replays the recorded first SAST scan so LinkedIn and recruiters can open the board without Docker. `docker compose up` on a clone still runs a live rescan.
+
 **Target:** [Open-SAE-J1939](https://github.com/DanielMartensson/Open-SAE-J1939) (MIT, ANSI C, ~33 `.c` files). Vendored under `vendor/Open-SAE-J1939` with license retained.
 
 ## What it demonstrates

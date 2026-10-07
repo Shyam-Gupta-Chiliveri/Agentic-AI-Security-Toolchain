@@ -1,0 +1,124 @@
+{
+  "target": "vendor/Open-SAE-J1939/Src",
+  "planned_agents": [
+    "semgrep",
+    "builtin_sast",
+    "critic"
+  ],
+  "producer_counts": {
+    "semgrep": 0,
+    "builtin_sast": 4
+  },
+  "findings_before_critic": 4,
+  "findings_after_critic": 4,
+  "dropped_as_noise": 0,
+  "untrusted_rag": false,
+  "findings": [
+    {
+      "id": "d31c9250c665",
+      "source": "builtin_sast",
+      "file": "SAE_J1939/SAE_J1939-21_Transport_Layer/Transport_Protocol_Data_Transfer.c",
+      "line": 23,
+      "cwe_id": "CWE-787",
+      "title": "Transport Protocol Data Transfer (TP.DT) sequence index has no lower bound",
+      "evidence": "uint8_t i, j, index = data[0] - 1;",
+      "suggested_fix": "Reject sequence number 0. Only compute index = sequence - 1 after checking 1 \u2264 sequence \u2264 declared package count, and (sequence - 1) \u00d7 7 + 6 < size of the Transport Protocol Data Transfer (TP.DT) buffer (MAX_TP_DT = 1785).",
+      "rag_citation": "CWE-787 Out-of-bounds Write. Source: https://cwe.mitre.org/data/definitions/787.html. ISO/SAE 21434: treat as a cybersecurity weakness in the implementation of a communication item (CAN transport). Typical attack path is a malformed multi-frame TP.DT sequence.",
+      "iso21434_note": "Mapped as a candidate weakness on a J1939 communication item (original 21434 *concept* notes in-repo \u2014 not the ISO text).",
+      "severity": "high",
+      "critic_decision": "keep",
+      "critic_rationale": "The critic mapped this to the Common Weakness Enumeration (CWE) using Retrieval-Augmented Generation (RAG) over in-repo MITRE notes. Severity follows the weakness class and whether the length or index comes from a Controller Area Network (CAN) frame.",
+      "triage": "unreviewed",
+      "extra": {
+        "recommended_label": "true_positive",
+        "why_this_label": "The tool is right. Byte 0 is attacker-controlled and 0 wraps the index.",
+        "what_happened": "What happened: the code takes the first payload byte of a Transport Protocol Data Transfer (TP.DT) frame, subtracts 1, and uses that as an array index. That byte comes from the Controller Area Network (CAN) bus, so an attacker can choose it. If that byte is 0, an unsigned 8-bit value wraps to 255 (Integer Overflow or Wraparound, Common Weakness Enumeration CWE-190). The write then lands past the end of the buffer (Out-of-bounds Write, CWE-787).",
+        "why_in_vehicle": "In a vehicle, another Electronic Control Unit (ECU) or a compromised gateway can send this frame on the bus. The stack may corrupt nearby memory. That is a cybersecurity weakness on a communication item, in ISO/SAE 21434 language.",
+        "technique_full": "Static Application Security Testing (SAST)",
+        "cwe_full": "CWE-787 \u00b7 Out-of-bounds Write",
+        "source_full": "Static Application Security Testing (SAST) \u2014 built-in C checkers",
+        "ranking_boost": 0
+      }
+    },
+    {
+      "id": "5b1e73c09b9f",
+      "source": "builtin_sast",
+      "file": "SAE_J1939/SAE_J1939-21_Transport_Layer/Transport_Protocol_Data_Transfer.c",
+      "line": 25,
+      "cwe_id": "CWE-787",
+      "title": "Write into the Transport Protocol Data Transfer (TP.DT) buffer with that untrusted index",
+      "evidence": "j1939->from_other_ecu_tp_dt.data[index*7 + i-1] = data[i]; /* For every package, we send 7 bytes of data where the first byte data[0] is the sequence number */",
+      "suggested_fix": "Reject sequence number 0. Only compute index = sequence - 1 after checking 1 \u2264 sequence \u2264 declared package count, and (sequence - 1) \u00d7 7 + 6 < size of the Transport Protocol Data Transfer (TP.DT) buffer (MAX_TP_DT = 1785).",
+      "rag_citation": "CWE-787 Out-of-bounds Write. Source: https://cwe.mitre.org/data/definitions/787.html. ISO/SAE 21434: treat as a cybersecurity weakness in the implementation of a communication item (CAN transport). Typical attack path is a malformed multi-frame TP.DT sequence.",
+      "iso21434_note": "Mapped as a candidate weakness on a J1939 communication item (original 21434 *concept* notes in-repo \u2014 not the ISO text).",
+      "severity": "high",
+      "critic_decision": "keep",
+      "critic_rationale": "The critic mapped this to the Common Weakness Enumeration (CWE) using Retrieval-Augmented Generation (RAG) over in-repo MITRE notes. Severity follows the weakness class and whether the length or index comes from a Controller Area Network (CAN) frame.",
+      "triage": "unreviewed",
+      "extra": {
+        "recommended_label": "true_positive",
+        "why_this_label": "Same real bug, one line later: this is the actual write past the buffer.",
+        "what_happened": "This line stores seven payload bytes at index\u00d77. If index wrapped, the write is outside the array.",
+        "why_in_vehicle": "In a vehicle, another Electronic Control Unit (ECU) or a compromised gateway can send this frame on the bus. The stack may corrupt nearby memory. That is a cybersecurity weakness on a communication item, in ISO/SAE 21434 language.",
+        "technique_full": "Static Application Security Testing (SAST)",
+        "cwe_full": "CWE-787 \u00b7 Out-of-bounds Write",
+        "source_full": "Static Application Security Testing (SAST) \u2014 built-in C checkers",
+        "ranking_boost": 0
+      }
+    },
+    {
+      "id": "0e8947fb13d2",
+      "source": "builtin_sast",
+      "file": "SAE_J1939/SAE_J1939-21_Transport_Layer/Transport_Protocol_Connection_Management.c",
+      "line": 29,
+      "cwe_id": "CWE-20",
+      "title": "Transport Protocol Connection Management (TP.CM) package count is not range-checked",
+      "evidence": "j1939->from_other_ecu_tp_cm.number_of_packages_being_transmitted = data[3];",
+      "suggested_fix": "After reading the Connection Management (CM) frame, accept it only if total message size is 9\u20131785 bytes and package count is 2\u2013224. Otherwise send abort and ignore following Data Transfer (DT) writes.",
+      "rag_citation": "CWE-20 Improper Input Validation. Source: https://cwe.mitre.org/data/definitions/20.html. TP.CM total size and package count must be checked against the stack maximum (e.g. 1785 bytes / 224 packages) before TP.DT writes.",
+      "iso21434_note": "Mapped as a candidate weakness on a J1939 communication item (original 21434 *concept* notes in-repo \u2014 not the ISO text).",
+      "severity": "medium",
+      "critic_decision": "keep",
+      "critic_rationale": "The critic mapped this to the Common Weakness Enumeration (CWE) using Retrieval-Augmented Generation (RAG) over in-repo MITRE notes. Severity follows the weakness class and whether the length or index comes from a Controller Area Network (CAN) frame.",
+      "triage": "unreviewed",
+      "extra": {
+        "recommended_label": "true_positive",
+        "why_this_label": "The tool is right. Byte 3 is trusted as a count with no 2\u2013224 check.",
+        "what_happened": "What happened: Transport Protocol Connection Management (TP.CM) copies payload byte 3 as \u201chow many packages will arrive\u201d and never checks the legal range (2 to 224 packages, matching at most 1785 bytes).",
+        "why_in_vehicle": "A bad Connection Management (CM) frame can announce hundreds of packages. Later Data Transfer (DT) writes then follow that lie.",
+        "technique_full": "Static Application Security Testing (SAST)",
+        "cwe_full": "CWE-20 \u00b7 Improper Input Validation",
+        "source_full": "Static Application Security Testing (SAST) \u2014 built-in C checkers",
+        "ranking_boost": 0
+      }
+    },
+    {
+      "id": "a191ffed00c3",
+      "source": "builtin_sast",
+      "file": "SAE_J1939/SAE_J1939-21_Transport_Layer/Transport_Protocol_Connection_Management.c",
+      "line": 45,
+      "cwe_id": "CWE-20",
+      "title": "Transport Protocol Connection Management (TP.CM) package count is not range-checked",
+      "evidence": "j1939->from_other_ecu_tp_cm.number_of_packages_being_transmitted = data[3];",
+      "suggested_fix": "After reading the Connection Management (CM) frame, accept it only if total message size is 9\u20131785 bytes and package count is 2\u2013224. Otherwise send abort and ignore following Data Transfer (DT) writes.",
+      "rag_citation": "CWE-20 Improper Input Validation. Source: https://cwe.mitre.org/data/definitions/20.html. TP.CM total size and package count must be checked against the stack maximum (e.g. 1785 bytes / 224 packages) before TP.DT writes.",
+      "iso21434_note": "Mapped as a candidate weakness on a J1939 communication item (original 21434 *concept* notes in-repo \u2014 not the ISO text).",
+      "severity": "medium",
+      "critic_decision": "keep",
+      "critic_rationale": "The critic mapped this to the Common Weakness Enumeration (CWE) using Retrieval-Augmented Generation (RAG) over in-repo MITRE notes. Severity follows the weakness class and whether the length or index comes from a Controller Area Network (CAN) frame.",
+      "triage": "unreviewed",
+      "extra": {
+        "recommended_label": "true_positive",
+        "why_this_label": "The tool is right. Byte 3 is trusted as a count with no 2\u2013224 check.",
+        "what_happened": "What happened: Transport Protocol Connection Management (TP.CM) copies payload byte 3 as \u201chow many packages will arrive\u201d and never checks the legal range (2 to 224 packages, matching at most 1785 bytes).",
+        "why_in_vehicle": "A bad Connection Management (CM) frame can announce hundreds of packages. Later Data Transfer (DT) writes then follow that lie.",
+        "technique_full": "Static Application Security Testing (SAST)",
+        "cwe_full": "CWE-20 \u00b7 Improper Input Validation",
+        "source_full": "Static Application Security Testing (SAST) \u2014 built-in C checkers",
+        "ranking_boost": 0
+      }
+    }
+  ],
+  "demo": true,
+  "demo_note": "Recorded first SAST scan (builtin C checkers + critic). GitHub Pages cannot run Docker; docker compose up on a clone for a live rescan."
+}
