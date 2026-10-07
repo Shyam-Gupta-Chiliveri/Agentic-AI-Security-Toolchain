@@ -1,0 +1,65 @@
+//
+// Created by ale-polimi on 09/09/26.
+//
+
+/* This is the example of an ECU which is capable of requesting the Vehicle Identification Number (VIN) (PGN: 0xFEEC) to a server ECU and interpreting the response.
+ * This example has been built to use socketcan over a virtual CAN interface.
+ * Pre-requisites:
+ * - Have a virtual CAN interface working on your computer. NOTE: The project hardcodes 'can0' as virtual interface, change line 9 of `.../Hardware/SocketCAN.h` to what you actually have available;
+ * - Use option `-DOPENSAE_J1939_TARGET_PLATFORM=SOCKETCAN` to build with CMake;
+ */
+
+#include <stdio.h>
+#include <unistd.h>
+
+#include "Open_SAE_J1939/Open_SAE_J1939.h"
+#include "Open_SAE_J1939/Structs.h"
+
+/* This function reads the CAN traffic */
+void Callback_Function_Traffic(uint32_t ID, uint8_t DLC, uint8_t data[], bool is_TX) {
+    /* Print if it is TX or RX */
+    printf("%s\t", is_TX ? "TX" : "RX");
+
+    /* Print ID as hex */
+    printf("%08X\t", ID);
+
+    /* Print the data */
+    uint8_t i;
+    for (i = 0U; i < DLC; i++) {
+        printf("%X\t", data[i]);
+    }
+
+    /* Print the non-data */
+    for (i = DLC; i < 8U; i++) {
+        printf("%X\t", 0U);
+    }
+
+    /* New line */
+    printf("\n");
+}
+
+int main() {
+
+    J1939 clientECU = { 0 };
+    clientECU.information_this_ECU.this_ECU_address = 0x60;
+    Open_SAE_J1939_Closedown_ECU(&clientECU);
+
+	/* Optional: it only prints to console the CAN traffic, it can be omitted if you use candump */
+    CAN_Set_Callback_Functions(NULL, NULL, Callback_Function_Traffic, NULL);
+
+    Open_SAE_J1939_Startup_ECU(&clientECU);
+
+    SAE_J1939_Send_Request(&clientECU, 0xFF, PGN_VEHICLE_IDENTIFICATION);
+
+    bool run = true;
+    while (run) {
+        Open_SAE_J1939_Listen_For_Messages(&clientECU);
+        if (clientECU.from_other_ecu_identifications.vehicle_identification.vin[0] != 0x00) {
+            run = false;
+        }
+    }
+
+    printf("VIN: %s from ECU with address: 0x%X\n", clientECU.from_other_ecu_identifications.vehicle_identification.vin, clientECU.from_other_ecu_identifications.ecu_identification.from_ecu_address);
+
+    return 0;
+}

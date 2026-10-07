@@ -1,0 +1,23 @@
+name: codeql
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * 1"
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: c-cpp
+      - uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:c-cpp"
+          output: sarif-results
+          upload: true

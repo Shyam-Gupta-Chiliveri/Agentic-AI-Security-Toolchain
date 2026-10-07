@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test-and-sast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: pip install -r requirements.txt
+      - name: Pytest
+        run: pytest
+      - name: Bandit on toolchain
+        run: bandit -q -r secagent apps scripts -x tests
+      - name: Semgrep on toolchain Python
+        run: semgrep --error --config p/python --quiet secagent apps || true
+      - name: Semgrep on vendored J1939 C
+        run: semgrep --quiet --config rules/embedded-c.yml vendor/Open-SAE-J1939/Src || true
+
+  trivy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          exit-code: "0"

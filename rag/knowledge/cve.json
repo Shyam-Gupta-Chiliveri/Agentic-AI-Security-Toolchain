@@ -1,0 +1,14 @@
+[
+  {
+    "id": "CVE-2023-29389",
+    "summary": "Example of a CAN/automotive-adjacent implementation flaw class: untrusted frame fields used as lengths or indexes.",
+    "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-29389",
+    "maps_to": ["CWE-20", "CWE-787"]
+  },
+  {
+    "id": "CVE-2022-0476",
+    "summary": "Out-of-bounds issues in protocol parsers are routinely assigned CWE-125/787. Use NVD as the cited source for mapping, not as a claim this CVE is in Open-SAE-J1939.",
+    "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-0476",
+    "maps_to": ["CWE-125", "CWE-787"]
+  }
+]

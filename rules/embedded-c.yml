@@ -1,0 +1,27 @@
+rules:
+  - id: cwe-787-tp-dt-index
+    languages: [c]
+    severity: ERROR
+    message: TP.DT index computed as data[0]-1 without a lower bound (CWE-787 / CWE-190 wrap).
+    metadata:
+      cwe:
+        - "CWE-787: Out-of-bounds Write"
+    pattern: $INDEX = data[0] - 1;
+
+  - id: cwe-20-tp-cm-packages
+    languages: [c]
+    severity: WARNING
+    message: TP.CM package count copied from CAN byte data[3] with no range check (CWE-20).
+    metadata:
+      cwe:
+        - "CWE-20: Improper Input Validation"
+    pattern: $X = data[3];
+
+  - id: cwe-120-memcpy
+    languages: [c]
+    severity: WARNING
+    message: memcpy length may come from a protocol field (review for CWE-120).
+    metadata:
+      cwe:
+        - "CWE-120: Classic Buffer Overflow"
+    pattern: memcpy($DST, $SRC, $LEN);

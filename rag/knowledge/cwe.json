@@ -1,0 +1,44 @@
+[
+  {
+    "id": "CWE-787",
+    "name": "Out-of-bounds Write",
+    "summary": "The product writes data past the end, or before the beginning, of the intended buffer. On an ECU this can corrupt adjacent protocol state or execute attacker-controlled CAN payload bytes.",
+    "url": "https://cwe.mitre.org/data/definitions/787.html",
+    "automotive": "ISO/SAE 21434: treat as a cybersecurity weakness in the implementation of a communication item (CAN transport). Typical attack path is a malformed multi-frame TP.DT sequence."
+  },
+  {
+    "id": "CWE-125",
+    "name": "Out-of-bounds Read",
+    "summary": "The product reads data past the end, or before the beginning, of the intended buffer.",
+    "url": "https://cwe.mitre.org/data/definitions/125.html",
+    "automotive": "On CAN stacks, a short DLC or a sequence index that underflows can leak adjacent RAM."
+  },
+  {
+    "id": "CWE-190",
+    "name": "Integer Overflow or Wraparound",
+    "summary": "The product performs a calculation that can overflow or wrap, producing an unexpected index or length.",
+    "url": "https://cwe.mitre.org/data/definitions/190.html",
+    "automotive": "Classic in TP: sequence_number - 1 when sequence_number is 0 (uint8 wrap to 255)."
+  },
+  {
+    "id": "CWE-120",
+    "name": "Classic Buffer Overflow",
+    "summary": "Copying a buffer without checking the size of input against the destination.",
+    "url": "https://cwe.mitre.org/data/definitions/120.html",
+    "automotive": "memcpy/strcpy of identification or DM16 payloads whose length comes from the bus."
+  },
+  {
+    "id": "CWE-20",
+    "name": "Improper Input Validation",
+    "summary": "The product receives input but does not validate or incorrectly validates that the input has the properties required.",
+    "url": "https://cwe.mitre.org/data/definitions/20.html",
+    "automotive": "TP.CM total size and package count must be checked against the stack maximum (e.g. 1785 bytes / 224 packages) before TP.DT writes."
+  },
+  {
+    "id": "CWE-476",
+    "name": "NULL Pointer Dereference",
+    "summary": "The product dereferences a pointer that is expected to be valid but is NULL.",
+    "url": "https://cwe.mitre.org/data/definitions/476.html",
+    "automotive": "Hardware callbacks left unset on a given platform."
+  }
+]
